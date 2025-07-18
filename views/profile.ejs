@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/views/public/style.css">
+    <style>
+        .profile-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .image-upload {
+            position: relative;
+            display: inline-block;
+        }
+
+        .image-upload input {
+            display: none;
+        }
+
+        .image-upload label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload label:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-shield-lock"></i> RBAC System
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-item nav-link">
+                    <i class="bi bi-person-circle"></i> Welcome, <%= user.name %>
+                </span>
+                <a class="nav-item nav-link" href="/users/logout">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h4 class="mb-0">Edit Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= locals.error %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>
+                        <% if (locals.success) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <%= locals.success %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>
+
+                        <form action="/users/profile" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <div class="profile-container">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="position-relative mb-3">
+                                        <% if (user.photo) { %>
+                                            <img src="/uploads/<%= user.photo %>" alt="Profile Photo" 
+                                                 class="profile-image img-thumbnail" 
+                                                 id="imagePreview"
+                                                 class="profile-photo">
+                                        <% } else { %>
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                                 class="bg-light rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                        <% } %>
+                                        <div class="position-absolute bottom-0 end-0">
+                                            <label for="profilePhoto" class="btn btn-primary btn-sm rounded-circle" 
+                                                   class="profile-photo-small d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-camera"></i>
+                                            </label>
+                                            <input type="file" id="profilePhoto" name="photo" accept="image/*" class="hidden-input">
+                                        </div>
+                                    </div>
+                                    <div class="text-muted small mb-3">
+                                        <% if (user.photo) { %>
+                                            <i class="bi bi-image me-1"></i> <%= user.photo %>
+                                        <% } else { %>
+                                            No photo uploaded
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" name="name" id="name" value="<%= user.name %>" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" name="email" id="email" value="<%= user.email %>" class="form-control" required>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-save me-2"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.needs-validation');
+            const profilePhotoInput = document.getElementById('profilePhoto');
+            let imagePreview = document.getElementById('imagePreview');
+            
+            
+            if (!imagePreview) {
+                const previewContainer = document.querySelector('.position-relative');
+                const newPreview = document.createElement('img');
+                newPreview.id = 'imagePreview';
+                newPreview.className = 'profile-image img-thumbnail';
+                newPreview.style.width = '150px';
+                newPreview.style.height = '150px';
+                newPreview.style.objectFit = 'cover';
+                previewContainer.insertBefore(newPreview, previewContainer.firstChild);
+                imagePreview = newPreview;
+            }
+
+            
+            profilePhotoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        
+                        if (imagePreview.tagName === 'DIV') {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'profile-image img-thumbnail';
+                            img.style.width = '150px';
+                            img.style.height = '150px';
+                            img.style.objectFit = 'cover';
+                            imagePreview.parentNode.replaceChild(img, imagePreview);
+                            imagePreview = img;
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success alert-dismissible fade show';
+                successAlert.role = 'alert';
+                successAlert.innerHTML = `
+                    ${urlParams.get('success')}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                const container = document.querySelector('.container');
+                container.insertBefore(successAlert, container.firstChild);
+                
+                
+                setTimeout(() => {
+                    successAlert.classList.remove('show');
+                    setTimeout(() => successAlert.remove(), 150);
+                }, 5000);
+            }
+
+            if (urlParams.has('error')) {
+                const errorAlert = document.createElement('div');
+                errorAlert.className = 'alert alert-danger alert-dismissible fade show';
+                errorAlert.role = 'alert';
+                errorAlert.innerHTML = `
+                    ${urlParams.get('error')}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                const container = document.querySelector('.container');
+                container.insertBefore(errorAlert, container.firstChild);
+                
+                
+                setTimeout(() => {
+                    errorAlert.classList.remove('show');
+                    setTimeout(() => errorAlert.remove(), 150);
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

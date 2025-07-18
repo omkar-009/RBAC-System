@@ -1,0 +1,32 @@
+{
+  "name": "rbac",
+  "version": "1.0.0",
+  "description": "Role-Based Access Control System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "rbac",
+    "role-based",
+    "access-control"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.0",
+    "ejs": "^3.1.10",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.13.3",
+    "multer": "^2.0.1",
+    "mysql2": "^3.14.2",
+    "nodemailer": "^7.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
